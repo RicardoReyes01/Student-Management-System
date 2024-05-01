@@ -1,0 +1,99 @@
+#Adding, displaying, searching, deleting, and updating student records
+#Viewing the calendar
+#Adding, deleting, and updating events in the calendar
+
+
+import calendar
+import pickle
+from datetime import datetime
+from collections import defaultdict
+
+class Student:
+    def __init__(self, name, rollno, m1, m2):
+        self.name = name
+        self.rollno = rollno
+        self.m1 = m1
+        self.m2 = m2
+
+def add_student():
+    name = input("Enter name: ")
+    rollno = int(input("Enter rollno: "))
+    m1 = float(input("Enter mark 1: "))
+    m2 = float(input("Enter mark 2: "))
+    student = Student(name, rollno, m1, m2)
+    students.append(student)
+    print("Student added successfully!")
+
+def display_students():
+    for student in students:
+        print(f"Name: {student.name}, Rollno: {student.rollno}, Mark 1: {student.m1}, Mark 2: {student.m2}")
+
+def search_student():
+    rollno = int(input("Enter rollno to search: "))
+    found = False
+    for student in students:
+        if student.rollno == rollno:
+            print(f"Name: {student.name}, Rollno: {student.rollno}, Mark 1: {student.m1}, Mark 2: {student.m2}")
+            found = True
+    if not found:
+        print("Student not found!")
+
+def delete_student():
+    rollno = int(input("Enter rollno to delete: "))
+    found = False
+    for i, student in enumerate(students):
+        if student.rollno == rollno:
+            del students[i]
+            found = True
+            print("Student deleted successfully!")
+            break
+    if not found:
+        print("Student not found!")
+
+def update_student():
+    rollno = int(input("Enter rollno to update: "))
+    found = False
+    for i, student in enumerate(students):
+        if student.rollno == rollno:
+            student.name = input("Enter new name: ")
+            student.m1 = float(input("Enter new mark 1: "))
+            student.m2 = float(input("Enter new mark 2: "))
+            found = True
+            print("Student updated successfully!")
+            break
+    if not found:
+        print("Student not found!")
+
+def view_calendar():
+    print("Calendar:")
+    print(calendar.month(datetime.now().year, datetime.now().month))
+
+def add_event():
+    month = int(input("Enter month: "))
+    day = int(input("Enter day: "))
+    event = input("Enter event: ")
+    calendar[datetime(datetime.now().year, month, day)].append(event)
+    print("Event added successfully!")
+
+def delete_event():
+    month = int(input("Enter month: "))
+    day = int(input("Enter day: "))
+    event = input("Enter event to delete: ")
+    if datetime(datetime.now().year, month, day) in calendar:
+        if event in calendar[datetime(datetime.now().year, month, day)]:
+            calendar[datetime(datetime.now().year, month, day)].remove(event)
+            print("Event deleted successfully!")
+        else:
+            print("Event not found!")
+    else:
+        print("Date not found!")
+
+def update_event():
+    month = int(input("Enter month: "))
+    day = int(input("Enter day: "))
+    old_event = input("Enter old event: ")
+    new_event = input("Enter new event: ")
+    if datetime(datetime.now().year, month, day) in calendar:
+        if old_event in calendar[datetime(datetime.now().year, month, day)]:
+            calendar[datetime(datetime.now().year, month, day)].remove(old_event)
+           
