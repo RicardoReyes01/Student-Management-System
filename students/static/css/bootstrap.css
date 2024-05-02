@@ -10848,6 +10848,16 @@ textarea.form-control-lg {
   .row-gap-lg-1 {
     row-gap: 0.25rem !important;
   }
+  .calendar-day{
+    margin: 15px;
+    font-size: 20px;
+  }
+  .calendar-table {
+    margin-right: 15px; /* Margin on the right side */
+    margin-left: 15px;
+    width: 100%; /* Make the table 100% wide */
+    height: 100vh; /* Make the table fill the viewport height */
+  }
   .row-gap-lg-2 {
     row-gap: 0.5rem !important;
   }

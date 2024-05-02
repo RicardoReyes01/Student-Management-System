@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
-from django.db.models import F, Value, CharField, Q
+import calendar
+from datetime import datetime
 
 from .models import Student
+from .models import CalendarEvent
 from .forms import StudentForm
 
 # Create your views here.
@@ -60,6 +62,10 @@ def search_students(request):
         print("Search Results: ", search_results)
     return render(request, 'students/search_students.html', {'search_students': search_results, 'query': query})
 
+def calendar_view(request):
+    # Assuming you have a model named CalendarEvent to store events
+    events = CalendarEvent.objects.all()
+    return render(request, 'calendar.html', {'events': events})
 
         
         

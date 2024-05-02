@@ -11,3 +11,12 @@ class Student(models.Model):
     
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+
+class CalendarEvent(models.Model):
+    date = models.DateField()
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name   
