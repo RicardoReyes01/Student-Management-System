@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.core.exceptions import ValidationError
+from django.utils.dateparse import parse_date
 import calendar
 from datetime import datetime
 
@@ -63,9 +66,53 @@ def search_students(request):
     return render(request, 'students/search_students.html', {'search_students': search_results, 'query': query})
 
 def calendar_view(request):
-    # Assuming you have a model named CalendarEvent to store events
+    month = datetime.now().month
+    year = datetime.now().year
+    cal = calendar.HTMLCalendar().formatmonth(year, month)
+    
+    if request.method == 'POST':
+        # Process form submission
+        event_date = request.POST.get('event-date')
+        event_name = request.POST.get('event-name')
+        
+        # Create and save the CalendarEvent instance
+        CalendarEvent.objects.create(date=event_date, name=event_name)
+        
+        # Redirect to the calendar page or any other appropriate page
+        return redirect('calendar')
+    
+    # If request method is not POST or if it's a GET request, render the calendar page
     events = CalendarEvent.objects.all()
-    return render(request, 'calendar.html', {'events': events})
+    return render(request, 'calendar.html', {'events': events, 'calendar': cal})
 
-        
-        
+def view_event(request):
+    events = CalendarEvent.objects.all()
+    return render(request, 'view_events.html', {'events': events})
+
+from django.shortcuts import redirect
+from django.contrib import messages
+
+def delete_events(request):
+    if request.method == 'POST':
+        selected_events_data = request.POST.getlist('selected_events')
+        for event_data in selected_events_data:
+            event_id, event_date = event_data.split('|')  # Splitting the combined value
+            try:
+                # Validate date format
+                parsed_date = parse_date(event_date)
+                if parsed_date is None:
+                    raise ValidationError('Invalid date format. Must be in YYYY-MM-DD format.')
+
+                # Process deletion
+                CalendarEvent.objects.filter(id=event_id).delete()
+                # Optionally, delete additional data related to the event
+
+            except ValidationError as e:
+                # Handle validation error
+                messages.error(request, e.message)
+
+        return redirect('calendar')
+    else:
+        # Handle GET request if needed
+        pass
+
