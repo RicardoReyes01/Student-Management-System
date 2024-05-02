@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
+from django.db.models import F, Value, CharField, Q
 
 from .models import Student
 from .forms import StudentForm
@@ -49,5 +50,16 @@ def delete(request, id):
         student = Student.objects.get(pk=id)
         student.delete()
     return HttpResponseRedirect(reverse('index'))   
+
+def search_students(request):
+    query = request.GET.get('query').strip()
+    search_results = []  # Initialize an empty list
+    if query:
+        search_results = Student.objects.filter(first_name__icontains=query) | Student.objects.filter(last_name__icontains=query)
+        print("Search Query: ", query)
+        print("Search Results: ", search_results)
+    return render(request, 'students/search_students.html', {'search_students': search_results, 'query': query})
+
+
         
         

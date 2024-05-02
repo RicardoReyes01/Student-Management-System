@@ -1,5 +1,4 @@
 from django.db import models
-import random, string
 
 # Create your models here.
 class Student(models.Model):
@@ -12,12 +11,3 @@ class Student(models.Model):
     
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-    
-    def save(self, *args, **kwargs):
-        if not self.student_number:
-            self.student_number = self.generate_student_number()
-        super().save(*args, **kwargs)
-    
-    def generate_student_number(self):
-        # Generate a random 5-digit number
-        return ''.join(random.choices(string.digits, k=5))
