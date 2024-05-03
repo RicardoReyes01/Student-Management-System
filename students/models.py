@@ -20,3 +20,21 @@ class CalendarEvent(models.Model):
 
     def __str__(self):
         return self.name   
+ 
+class Announcement(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    date_posted = models.DateTimeField(auto_now_add=True)
+    author = models.CharField(max_length=100)  # You can customize this field based on your requirements
+
+    def __str__(self):
+        return self.title   
+    
+class Grade(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=100)
+    score = models.DecimalField(max_digits=5, decimal_places=2)
+    # Add other fields as needed
+
+    def __str__(self):
+        return f"{self.student} - {self.subject}"

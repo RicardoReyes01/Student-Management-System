@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -9,8 +9,10 @@ import calendar
 from datetime import datetime
 
 from .models import Student
+from students.models import Grade
 from .models import CalendarEvent
-from .forms import StudentForm
+from .forms import StudentForm, GradeForm
+from .models import Announcement
 
 # Create your views here.
 def index(request):
@@ -89,9 +91,6 @@ def view_event(request):
     events = CalendarEvent.objects.all()
     return render(request, 'view_events.html', {'events': events})
 
-from django.shortcuts import redirect
-from django.contrib import messages
-
 def delete_events(request):
     if request.method == 'POST':
         selected_events_data = request.POST.getlist('selected_events')
@@ -116,3 +115,38 @@ def delete_events(request):
         # Handle GET request if needed
         pass
 
+def current_announcements(request):
+    announcements = Announcement.objects.order_by('-date_posted')[:5]  # Get the latest 5 announcements
+    return render(request, 'announcement.html', {'announcements': announcements})
+
+def grades(request):
+    grades = Grade.objects.select_related('student').all()
+    return render(request, 'grades.html', {'grades': grades})
+
+def add_grade(request):
+    if request.method == 'POST':
+        form = GradeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('grades')
+    else:
+        form = GradeForm()
+    return render(request, 'add_grade.html', {'form': form})
+
+def edit_grade(request, pk):
+    grade = get_object_or_404(Grade, pk=pk)
+    if request.method == 'POST':
+        form = GradeForm(request.POST, instance=grade)
+        if form.is_valid():
+            form.save()
+            return redirect('grades')
+    else:
+        form = GradeForm(instance=grade)
+    return render(request, 'edit_grade.html', {'form': form})
+
+def delete_grade(request, pk):
+    grade = get_object_or_404(Grade, pk=pk)
+    if request.method == 'POST':
+        grade.delete()
+        return redirect('grades')
+    return render(request, 'delete_grade.html', {'grade': grade})
