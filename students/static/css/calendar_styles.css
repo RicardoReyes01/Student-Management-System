@@ -1,0 +1,12 @@
+.calendar {
+    font-size: 16px;
+    color: #333;
+}
+
+.calendar th {
+    background-color: #f0f0f0;
+}
+
+.calendar td {
+    border: 1px solid #ccc;
+}
