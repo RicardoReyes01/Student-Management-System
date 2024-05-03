@@ -8,7 +8,7 @@
 {% block body %}
     <h3 class="text-center m-4">Calendar</h3>
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-2">
             <div class="card bg-light mb-3">
                 <div class="card-header"><i class="fa-solid fa-calendar-days fa-lg"></i> Calendar</div>
                 <div class="card-body">
@@ -19,10 +19,10 @@
             </div>
         </div>
     </div>
-    <div style="margin-top: 100px;"></div>
+    <div style="margin-top: 85px;"></div>
     <h3 class="text-center m-4">Events</h3>
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-2">
             <div class="card bg-light mb-3">
                 <div class="card-header"><i class="fa-solid fa-calendar-plus fa-lg"></i> Events</div>
                 <div class="card-body">
@@ -36,8 +36,9 @@
         </div>
         <div class="mb-3">
             <label for="event-name">Event:</label>
-            <input type="text" id="event-name" name="event-name">
+            <input type="text" id="event-name" name="event-name" placeholder="     Add an event" style="width: 140px;">
         </div>
+        <div class="btn-group-vertical" style="width: 100%;">
         <button type="submit" class="btn btn-success"> <span style="padding-right: 5px;"><i class="fas fa-calendar-plus"></i>
             </span>Add Event
         </button>
@@ -79,6 +80,7 @@
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEventsModal">
             <span style="padding-right: 5px;"><i class="fa-solid fa-trash"></i></span>Delete Events
         </button>
+    </div>
         <div class="modal fade" id="deleteEventsModal" tabindex="-1" aria-labelledby="deleteEventsModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

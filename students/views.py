@@ -30,10 +30,10 @@ def add(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
         if form.is_valid():
-            form.save()  # Save the form data to create a new student
-            return redirect('index')  # Redirect to the index page after successful form submission
+            form.save() 
+            return redirect('index') 
     else:
-        form = StudentForm()  # Create a new form instance if it's a GET request
+        form = StudentForm() 
         
     return render(request, 'students/add.html', {'form': form})
 
@@ -60,7 +60,7 @@ def delete(request, id):
 
 def search_students(request):
     query = request.GET.get('query').strip()
-    search_results = []  # Initialize an empty list
+    search_results = []
     if query:
         search_results = Student.objects.filter(first_name__icontains=query) | Student.objects.filter(last_name__icontains=query)
         print("Search Query: ", query)
@@ -77,13 +77,10 @@ def calendar_view(request):
         event_date = request.POST.get('event-date')
         event_name = request.POST.get('event-name')
         
-        # Create and save the CalendarEvent instance
         CalendarEvent.objects.create(date=event_date, name=event_name)
         
-        # Redirect to the calendar page or any other appropriate page
         return redirect('calendar')
     
-    # If request method is not POST or if it's a GET request, render the calendar page
     events = CalendarEvent.objects.all()
     return render(request, 'calendar.html', {'events': events, 'calendar': cal})
 
@@ -95,19 +92,16 @@ def delete_events(request):
     if request.method == 'POST':
         selected_events_data = request.POST.getlist('selected_events')
         for event_data in selected_events_data:
-            event_id, event_date = event_data.split('|')  # Splitting the combined value
+            event_id, event_date = event_data.split('|')
             try:
-                # Validate date format
                 parsed_date = parse_date(event_date)
                 if parsed_date is None:
                     raise ValidationError('Invalid date format. Must be in YYYY-MM-DD format.')
 
                 # Process deletion
                 CalendarEvent.objects.filter(id=event_id).delete()
-                # Optionally, delete additional data related to the event
 
             except ValidationError as e:
-                # Handle validation error
                 messages.error(request, e.message)
 
         return redirect('calendar')
@@ -116,7 +110,7 @@ def delete_events(request):
         pass
 
 def current_announcements(request):
-    announcements = Announcement.objects.order_by('-date_posted')[:5]  # Get the latest 5 announcements
+    announcements = Announcement.objects.order_by('-date_posted')[:5] 
     return render(request, 'announcement.html', {'announcements': announcements})
 
 def grades(request):
